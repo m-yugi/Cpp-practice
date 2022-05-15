@@ -2,22 +2,25 @@
 #include<unordered_map>
 #include<vector>
 
-using namespace std;
-
+using std::cin;
+using std::cout;
+using std::vector;
+using std::unordered_map;
+using std::string;
 class Playfare
 {
     unordered_map<char, vector<int>> table;
     vector<char> matrix_1d;
     char matrix_2d[5][5];
-    int x1,y1,x2,y2;
+    int X1,Y1,X2,Y2;
     int i, j;
 
     // Helper Function
-    bool present(char target)
+    bool present(char num)
     {
-        for(auto elm : matrix_1d)
+        for(char i : matrix_1d)
         {
-            if(target == elm)
+            if(num == i)
             {
                 return true;
             }
@@ -25,100 +28,100 @@ class Playfare
         return false;
     }
 
-    string refine_key(string input)
+    string refine_key(string num)
     {
-        for(auto elm : input)
+        for(char i : num)
         {
-            if(elm == 'Z')
+            if(i == 'Z')
             {
-                elm == 'Y';
+                i == 'Y';
             }
         }
 
-        return input;
+        return num;
     }
     
-    string refine_plain_text(string input)
+    string refine_plain_text(string num)
     {
-        string result = "";
+        string res = "";
 
         // For same adjacent element
-        for(int i=0; i<input.size(); i++)
+        for(int i=0; i<num.size(); i++)
         {
-            if(input[i] == input[i+1])
+            if(num[i] == num[i+1])
             {
-                result+=input[i];
+                res+=num[i];
                 
-                if(input[i] == 'X')
+                if(num[i] == 'X')
                 {
-                    result+='Y';
+                    res+='Y';
                 }
                 else
                 {
-                    result+='X';
+                    res+='X';
                 }
             }
             else
             {
-                result+=input[i];
+                res+=num[i];
             }
 
         }
         
         // For Z element
-        for(auto elm: input)
+        for(char i: num)
         {
-            if(elm == 'Z')
+            if(i == 'Z')
             {
-                elm == 'Y';
+                i == 'Y';
             }
         }
 
         // For odd length
-        if(result.size()%2!=0)
+        if(res.size()%2!=0)
         {
-            if(result[result.size()-1] == 'X')
+            if(res[res.size()-1] == 'X')
             {
-                result+='Y';
+                res+='Y';
             }
             else
             {
-                result+='X';
+                res+='X';
             }
         }
-        return result;
+        return res;
     }
 
     void get_2d_matrix()
     {
-        for(int k=0; k<25; k++)
+        for(int m=0; m<25; m++)
         {
-            i=k/5;
-            j=k%5;
+            i=m/5;
+            j=m%5;
 
-            matrix_2d[i][j] = matrix_1d[k];
+            matrix_2d[i][j] = matrix_1d[m];
 
             // Adding Element to Table
-            table[matrix_1d[k]] = {i,j};
+            table[matrix_1d[m]] = {i,j};
         }
     }
 
     // Rule    
     bool row_rule()
     {
-        if(x1==x2)
+        if(X1==X2)
         {
-            y1++;
-            y2++;
+            Y1++;
+            Y2++;
 
-            if(y1==5)
+            if(Y1==5)
             {
-                y1=0;
+                Y1=0;
             }
 
-            if(y2==5)
+            if(Y2==5)
             {
-                y2=0;
+                Y2=0;
             }
             return true;
         }
@@ -127,19 +130,19 @@ class Playfare
 
     bool column_rule()
     {
-        if(y1==y2)
+        if(Y1==Y2)
         {
-            x1++;
-            x2++;
+            X1++;
+            X2++;
 
-            if(x1==5)
+            if(X1==5)
             {
-                x1=0;
+                X1=0;
             }
 
-            if(x2==5)
+            if(X2==5)
             {
-                x2==0;
+                X2==0;
             }
 
             return true;
@@ -151,9 +154,9 @@ class Playfare
     {
         if(!row_rule() and !column_rule())
         {
-            int i2 = y1;
-            y1 = y2;
-            y2 = i2;
+            int i2 = Y1;
+            Y1 = Y2;
+            Y2 = i2;
 
             return true;
         }
@@ -206,11 +209,11 @@ class Playfare
             char elm1 = input[i];
             char elm2 = input[i+1];
 
-            x1 = table[elm1][0];
-            y1 = table[elm1][1];
+            X1 = table[elm1][0];
+            Y1 = table[elm1][1];
 
-            x2 = table[elm2][0];
-            y2 = table[elm2][1];
+            X2 = table[elm2][0];
+            Y2 = table[elm2][1];
 
             /*
             cout<<"\nBefore\n";
@@ -219,8 +222,8 @@ class Playfare
 
             rule();
 
-            result+=matrix_2d[x1][y1];
-            result+=matrix_2d[x2][y2];
+            result+=matrix_2d[X1][Y1];
+            result+=matrix_2d[X2][Y2];
 
             /*
             cout<<"\nAfter\n";
@@ -228,36 +231,36 @@ class Playfare
             */
         }
 
-        cout<<"\nCipher Text: "<<result;
+        cout<<"\nthis is Cipher Text: "<<result;
     }
     
     // Print
-    void print_1d()
-    {
-        cout<<"\n1 D Matrix\n";
+    // void print_1d()
+    // {
+    //     cout<<"\n1 D Matrix\n";
 
-        for(auto elm : matrix_1d)
-        {
-            cout<<elm<<" ";
-        }
+    //     for(auto elm : matrix_1d)
+    //     {
+    //         cout<<elm<<" ";
+    //     }
 
-        cout<<"\n";
-    }
+    //     cout<<"\n";
+    // }
 
-    void print_2d()
-    {
-        cout<<"\n\n2 D Matrix\n";
+    // void print_2d()
+    // {
+    //     cout<<"\n\n2 D Matrix\n";
 
-        for(int i=0; i<5; i++)
-        {
-            for(int j=0; j<5; j++)
-            {
-                cout<<matrix_2d[i][j]<<" ";
-            }
-            cout<<"\n";
-        }
-        cout<<"\n";
-    }
+    //     for(int i=0; i<5; i++)
+    //     {
+    //         for(int j=0; j<5; j++)
+    //         {
+    //             cout<<matrix_2d[i][j]<<" ";
+    //         }
+    //         cout<<"\n";
+    //     }
+    //     cout<<"\n";
+    // }
 };
 
 int main()
@@ -266,10 +269,10 @@ int main()
     string plain_text = "";
 
     
-    cout<<"Key: ";
+    cout<<"Please enter the Key: ";
     cin>>key;
 
-    cout<<"Plain Text: ";
+    cout<<"Please enter the Plain Text: ";
     cin>>plain_text;
     
 
@@ -277,6 +280,6 @@ int main()
 
     p.get_key(key);
     p.cipher(plain_text);
-    p.print_2d();
+    //p.print_2d();
     return 0;
 }
